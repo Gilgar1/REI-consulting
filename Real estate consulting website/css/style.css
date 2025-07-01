@@ -1,0 +1,102 @@
+:root {
+  --primary-bg: #F6F5F5;
+  --primary-color: #5D64F5;
+  --secondary-color: #173AF4;
+  --accent-color: #7693EE;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  padding: 15px 0; /* Increased vertical padding */
+}
+
+.nav-link {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+.nav-link.active:after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #7693EE; /* Accent underline for active item */
+}
+
+
+/* Logo Styling */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+.navbar-brand i {
+  font-size: 1.3em;
+  color: #F6F5F5;
+}
+
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap');
+.logo-text {
+  background: linear-gradient(to right, #F6F5F5, #7693EE);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 1px;
+}
+
+/* Rounded Navbar */
+
+
+.navbar {
+  border-radius:25px 25px 25px 25px !important;
+  padding: 0.8rem 1rem;
+}
+
+/* Rounded buttons */
+.btn {
+  border-radius: 50px !important;
+  font-weight: 500;
+}
+
+/* Testimonial Slider */
+.testimonial-slider .slick-slider {
+  margin: 0 auto;
+  max-width: 800px;
+}
+.testimonial-card {
+  background: white;
+  border-radius: 10px;
+  margin: 0 15px;
+}
+
+/* Video Section */
+.video-container {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.video-thumbnail {
+  border-radius: 10px;
+  cursor: pointer;
+}
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+/* Footer */
+.footer a {
+  text-decoration: none;
+}
