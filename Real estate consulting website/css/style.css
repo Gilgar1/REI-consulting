@@ -65,6 +65,8 @@ body {
   font-weight: 500;
 }
 
+
+
 /* Testimonial Slider */
 .testimonial-slider .slick-slider {
   margin: 0 auto;
@@ -99,4 +101,124 @@ body {
 /* Footer */
 .footer a {
   text-decoration: none;
+}
+/* Hero Section */
+.hero-section {
+  height: 80vh;
+  min-height: 500px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden; /* Ensures rounded corners clip the background */
+  margin-top: 2rem; /* Space between navbar and hero */
+  border-radius: 1rem !important; /* Rounds all 4 edges */
+}
+
+.hero-text {
+  font-size: 4rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(255,255,255,0.1);
+  max-width: 800px;
+  padding: 0 2rem; /* Prevents text from touching edges */
+}
+
+/* Force pure black text */
+.hero-text span {
+  color: #000000 !important;
+  text-shadow: 0 2px 4px rgba(255,255,255,0.3); /* White shadow for contrast */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    height: 60vh;
+    margin-top: 1.5rem; /* Smaller space on mobile */
+    border-radius: 0.75rem !important;
+  }
+  
+  .hero-text {
+    font-size: 2rem;
+  }
+}
+
+.services-section {
+  padding: 5rem 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .services-section {
+    text-align: center;
+    padding: 3rem 0;
+  }
+  
+  .services-section img {
+    margin-top: 2rem;
+    max-height: 250px !important;
+  }
+}
+
+/* Blog Cards */
+.blog-card {
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+.blog-img-container {
+  overflow: hidden;
+}
+
+.blog-img {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.blog-card:hover .blog-img {
+  transform: scale(1.05);
+}
+
+.interaction-buttons .btn:hover {
+  color: var(--bs-primary) !important;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .blog-section .row {
+    row-gap: 2rem;
+  }
+}
+
+/* Booking Form Styling */
+.booking-section .card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+#bookingForm .form-control, 
+#bookingForm .form-select {
+  background-color: rgba(255,255,255,0.9);
+  border: 2px solid white;
+}
+
+#bookingForm .form-control:focus,
+#bookingForm .form-select:focus {
+  border-color: #5D64F5;
+  box-shadow: 0 0 0 0.25rem rgba(255,255,255,0.25);
+}
+
+#bookingForm .form-check-input:checked {
+  background-color: #5D64F5;
+  border-color: #5D64F5;
+}
+
+/* Date Picker Improvements */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  padding: 4px;
+  background-size: 20px;
+  cursor: pointer;
 }
