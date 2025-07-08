@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REI | Real Estate Insights</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-blue: #5D64F5;
+      --light-bg: #F6F5F5;
+    }
+    
+    .blog-header {
+      background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('../images/blog-bg.jpg');
+      background-size: cover;
+      padding: 4rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .search-card {
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .blog-card {
+      border-left: 3px solid var(--primary-blue);
+      transition: all 0.3s ease;
+    }
+    
+    .blog-card:hover {
+      transform: translateX(5px);
+    }
+    
+    .post-content img {
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      max-height: 500px;
+      object-fit: cover;
+      width: 100%;
+    }
+    
+    .back-btn {
+      position: sticky;
+      top: 20px;
+      z-index: 1020;
+    }
+    
+    @media (max-width: 768px) {
+      .filter-dropdowns {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar (same as your main site) -->
+
+  <!-- Dynamic Content Area -->
+  <main id="blog-container">
+    <!-- Content loads here dynamically -->
+  </main>
+
+  <!-- Blog Data Script -->
+  <script>
+    // Sample blog data - REPLACE WITH CMS DATA LATER
+    const blogPosts = [
+      {
+        id: 1,
+        slug: "douala-property-trends-2024",
+        title: "Douala Property Market Trends 2024",
+        excerpt: "Analysis of emerging neighborhoods and price movements in Cameroon's economic capital",
+        content: `
+          <img src="../images/douala-property.jpg" alt="Douala skyline" class="img-fluid">
+          <h2>Current Market Overview</h2>
+          <p>Douala's real estate market continues to show strong growth, particularly in these areas:</p>
+          <ul>
+            <li>Bonanjo commercial district (12% price increase YoY)</li>
+            <li>Residential zones in Bonapriso</li>
+            <li>New developments along Wouri River</li>
+          </ul>
+          <div class="alert alert-primary mt-4">
+            <strong>Tip:</strong> Early investors in new infrastructure corridors are seeing 20-30% annual appreciation.
+          </div>
+        `,
+        category: "Market Analysis",
+        date: "2024-03-15",
+        read_time: "5 min read",
+        author: "Jean Mbarga",
+        image: "douala-property.jpg"
+      },
+      {
+        id: 2,
+        slug: "land-title-cameroon",
+        title: "Securing Land Titles in Cameroon: Complete Guide",
+        excerpt: "Step-by-step process to verify and obtain land titles with confidence",
+        content: `
+          <img src="../images/land-title.jpg" alt="Land documents" class="img-fluid">
+          <h2>The Title Verification Process</h2>
+          <p>Key steps every buyer should follow:</p>
+          <ol>
+            <li>Consult the land registry in your region</li>
+            <li>Verify seller's identity and documents</li>
+            <li>Check for existing liens or disputes</li>
+            <li>Obtain surveyor's certificate</li>
+          </ol>
+          <p>Our team can handle this entire process for you - <a href="#book-consultation">Book a consultation</a> to learn more.</p>
+        `,
+        category: "Legal Guide",
+        date: "2024-02-28",
+        read_time: "8 min read",
+        author: "Amina Njoya",
+        image: "land-title.jpg"
+      }
+      // Add more posts as needed
+    ];
+
+    // DOM Elements
+    const blogContainer = document.getElementById('blog-container');
+    const urlParams = new URLSearchParams(window.location.search);
+    const postSlug = urlParams.get('post');
+
+    // Load appropriate view
+    window.addEventListener('load', () => {
+      if (postSlug) {
+        showPost(postSlug);
+      } else {
+        showBlogList();
+      }
+    });
+
+    // Show all posts
+    function showBlogList() {
+      blogContainer.innerHTML = `
+        <section class="blog-header text-center">
+          <div class="container">
+            <h1 class="display-5 fw-bold mb-3">REI Insights</h1>
+            <p class="lead">Expert real estate knowledge for Cameroon</p>
+          </div>
+        </section>
+        
+        <section class="py-5">
+          <div class="container">
+            <!-- Search and Filters -->
+            <div class="row mb-5">
+              <div class="col-lg-8 mx-auto">
+                <div class="search-card card p-3 mb-3">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search articles..." id="searchInput">
+                    <button class="btn btn-primary" type="button">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="d-flex filter-dropdowns justify-content-between mb-4">
+                  <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                      <i class="fas fa-calendar me-2"></i> Sort by Date
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Newest First</a></li>
+                      <li><a class="dropdown-item" href="#">Oldest First</a></li>
+                    </ul>
+                  </div>
+                  
+                  <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                      <i class="fas fa-filter me-2"></i> Filter by Topic
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Market Trends</a></li>
+                      <li><a class="dropdown-item" href="#">Legal Guides</a></li>
+                      <li><a class="dropdown-item" href="#">Investment Tips</a></li>
+                      <li><a class="dropdown-item" href="#">All Topics</a></li>
+                    </ul>
+                  </div>
+                  
+                  <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                      <i class="fas fa-clock me-2"></i> Read Time
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Under 5 mins</a></li>
+                      <li><a class="dropdown-item" href="#">5-10 mins</a></li>
+                      <li><a class="dropdown-item" href="#">10+ mins</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Blog List -->
+            <div class="row g-4" id="blog-list">
+              ${blogPosts.map(post => `
+                <div class="col-md-6">
+                  <div class="blog-card card p-4 h-100">
+                    <span class="badge bg-primary mb-3">${post.category}</span>
+                    <h3 class="mb-3">${post.title}</h3>
+                    <p class="text-muted">${post.excerpt}</p>
+                    <div class="mt-auto pt-3">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                          <i class="far fa-calendar me-1"></i> ${formatDate(post.date)} • 
+                          <i class="far fa-clock me-1"></i> ${post.read_time}
+                        </small>
+                        <a href="blogs.html?post=${post.slug}" class="btn btn-sm btn-outline-primary">Read More</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+      `;
+      
+      // Add search functionality
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        document.querySelectorAll('#blog-list .col-md-6').forEach(card => {
+          const matches = card.textContent.toLowerCase().includes(term);
+          card.style.display = matches ? 'block' : 'none';
+        });
+      });
+    }
+
+    // Show single post
+    function showPost(slug) {
+      const post = blogPosts.find(p => p.slug === slug);
+      if (!post) return showBlogList();
+      
+      document.title = `${post.title} | REI Blog`;
+      
+      blogContainer.innerHTML = `
+        <a href="blogs.html" class="back-btn btn btn-light ms-4 mt-4 shadow-sm">
+          <i class="fas fa-arrow-left me-2"></i> Back to All Posts
+        </a>
+        
+        <article class="container py-5">
+          <div class="row justify-content-center">
+            <div class="col-lg-8">
+              <!-- Post Header -->
+              <div class="mb-5">
+                <span class="badge bg-primary mb-3">${post.category}</span>
+                <h1 class="mb-3">${post.title}</h1>
+                <div class="d-flex align-items-center">
+                  <img src="../images/authors/${post.author.replace(/\s+/g, '-').toLowerCase()}.jpg" 
+                       alt="${post.author}" width="40" height="40" class="rounded-circle me-3">
+                  <div>
+                    <p class="mb-0 fw-bold">${post.author}</p>
+                    <small class="text-muted">
+                      ${formatDate(post.date)} • ${post.read_time}
+                    </small>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Featured Image -->
+              <img src="../images/${post.image}" alt="${post.title}" class="img-fluid rounded-3 shadow mb-5">
+              
+              <!-- Post Content -->
+              <div class="post-content mb-5">
+                ${post.content}
+              </div>
+              
+              <!-- CTA Section -->
+              <div class="card border-0 shadow p-4 p-md-5 text-center bg-light mb-5">
+                <h3 class="mb-3">Ready to take action?</h3>
+                <p class="lead mb-4">Our experts can help you apply these insights to your specific situation</p>
+                <a href="../#book-call" class="btn btn-primary btn-lg px-5">
+                  Book Free Consultation
+                </a>
+              </div>
+              
+              <!-- Back Button -->
+              <div class="text-center">
+                <a href="blogs.html" class="btn btn-outline-primary">
+                  <i class="fas fa-arrow-left me-2"></i> Back to All Posts
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    // Helper function to format dates
+    function formatDate(dateString) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString('en-US', options);
+    }
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

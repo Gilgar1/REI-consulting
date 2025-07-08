@@ -16,36 +16,44 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <!-- Updated Navbar HTML -->
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: #173AF4; border-radius: 0 0 25px 25px;">
+ <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: #173AF4;">
   <div class="container">
-    <a class="navbar-brand" href="#" style="font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.5rem;">
-      <i class="fas fa-home me-2"></i> <!-- House icon -->
-      <span class="logo-text">REI</span>
+    <!-- Bold Logo -->
+    <a class="navbar-brand fw-bolder fs-3 me-5" href="#" style="letter-spacing: 1px;">
+      <span style="color: #F6F5F5;">REI</span>
     </a>
+    
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav mx-auto">
-        <li class="nav-item px-3"> <!-- Increased padding -->
+    
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav fw-bold">
+        <li class="nav-item px-2">
           <a class="nav-link active" href="#">Home</a>
         </li>
-        <li class="nav-item px-3">
+        <li class="nav-item px-2">
           <a class="nav-link" href="#blogs">Blogs</a>
         </li>
-        <li class="nav-item px-3">
+        <li class="nav-item px-2">
+          <a class="nav-link" href="explore-products.html">Our Products</a>
+        </li>
+        <li class="nav-item px-2">
           <a class="nav-link" href="#how-we-work">How We Work</a>
         </li>
+        <li class="nav-item px-2">
+          <a class="nav-link" href="#book-call">Book a Call</a>
+        </li>
       </ul>
-      <div class="d-flex ms-auto">
-        <button class="btn btn-outline-light me-2 rounded-pill px-4">Login</button>
-        <button class="btn btn-light rounded-pill px-4">Sign Up</button>
+      
+      <!-- Auth Buttons -->
+      <div class="d-flex ms-lg-4">
+        <a href="login.html" class="btn btn-outline-light me-2 fw-bold">Login</a>
+        <a href="register.html" class="btn btn-light fw-bold">Sign Up</a>
       </div>
     </div>
   </div>
 </nav>
-
 
 <!-- After your navbar -->
 <section class="hero-section mt-5 rounded-4" style="background-image: url('images/bg1.jpg');">
@@ -66,6 +74,9 @@
         <h2 class="text-white display-5 fw-bold mb-4">
           Access Affordable Loans, Manage Your Property, and Sell Confidently with Real Estate Investments (REI) Consulting!
         </h2>
+        <a href="explore-products.html" class="btn btn-light btn-lg px-4 py-2 fw-bold mt-3">
+          Explore Our Products <i class="fas fa-arrow-right ms-2"></i>
+        </a>
       </div>
       
       <!-- Image (Right) -->

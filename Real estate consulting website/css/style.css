@@ -222,3 +222,147 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   background-size: 20px;
   cursor: pointer;
 }
+
+/* Modern Auth Styles */
+.auth-section {
+  background-color: #F6F5F5;
+}
+
+.auth-card {
+  background: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+
+.auth-header {
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-header::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  transform: rotate(30deg);
+}
+
+.auth-toggle {
+  display: flex;
+  background: rgba(118, 147, 238, 0.1);
+}
+
+.auth-toggle-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  background: transparent;
+  color: #5D64F5;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.auth-toggle-btn.active {
+  background: #5D64F5;
+  color: white;
+}
+
+.form-floating>label {
+  color: #6c757d;
+  transition: all 0.2s;
+}
+
+.form-control {
+  border: 1px solid #dee2e6;
+  padding: 1rem 1.25rem;
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  border-color: #7693EE;
+  box-shadow: 0 0 0 0.25rem rgba(118, 147, 238, 0.25);
+}
+
+.social-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle {
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.password-toggle:hover {
+  color: #5D64F5;
+}
+
+/* Animated focus effect */
+.form-control:focus~label {
+  transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+  color: #7693EE;
+}
+
+/* Navbar Enhancements */
+.navbar-brand {
+  font-weight: 900 !important;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.navbar-brand span {
+  position: relative;
+  z-index: 1;
+}
+
+.navbar-brand::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background-color: #7693EE;
+  opacity: 0.7;
+  z-index: 0;
+  border-radius: 4px;
+}
+
+.nav-link {
+  font-weight: 600 !important;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: #F6F5F5;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 70%;
+}
+
+/* Push items to right */
+.navbar-collapse {
+  flex-grow: 0;
+}
