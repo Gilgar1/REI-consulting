@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REI | Our Products</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-blue: #5D64F5;
+      --dark-blue: #173AF4;
+      --light-bg: #F6F5F5;
+    }
+    
+    body {
+      background-color: #f9f9f9;
+    }
+    
+    .product-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .product-hero {
+      background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('../images/products-bg.jpg');
+      background-size: cover;
+      background-position: center;
+      padding: 4rem 0;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .product-card {
+      border: none;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      background: white;
+      height: 100%;
+      position: relative;
+      border-top: 4px solid;
+    }
+    
+    /* Colored borders */
+    .loan-card { border-color: #5D64F5; }
+    .land-card { border-color: #28a745; }
+    .build-card { border-color: #ffc107; }
+    .manage-card { border-color: #dc3545; }
+    .sell-card { border-color: #17a2b8; }
+    .consult-card { border-color: #6c757d; }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    .product-icon {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      color: white;
+    }
+    
+    .loan-icon { background-color: #5D64F5; }
+    .land-icon { background-color: #28a745; }
+    .build-icon { background-color: #ffc107; }
+    .manage-icon { background-color: #dc3545; }
+    .sell-icon { background-color: #17a2b8; }
+    
+    .accordion-button:not(.collapsed) {
+      background-color: rgba(93, 100, 245, 0.05);
+      color: var(--dark-blue);
+      box-shadow: none;
+    }
+    
+    .accordion-button:focus {
+      box-shadow: none;
+      border-color: rgba(0,0,0,0.125);
+    }
+    
+    .booking-card {
+      border-top: 4px solid #5D64F5;
+      border-radius: 10px;
+    }
+    
+    .call-type-btn {
+      border: 1px solid #dee2e6;
+      background: white;
+      padding: 0.5rem;
+      text-align: center;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .call-type-btn.active {
+      border-color: #5D64F5;
+      background-color: rgba(93, 100, 245, 0.05);
+    }
+    
+    .call-type-btn i {
+      display: block;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar (same as your main site) -->
+  
+  <!-- Hero Section -->
+  <section class="product-hero">
+    <div class="container product-container">
+      <h1 class="display-5 fw-bold mb-3">Real Estate Investments(REI) Consulting</h1>
+      <p class="lead mb-4 text-muted">Your complete real estate partner in Cameroon</p>
+      <a href="#book-consultation" class="btn btn-primary px-4 py-2 fw-bold">
+        Book Free Consultation <i class="fas fa-calendar-check ms-2"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- Products Grid -->
+  <section class="py-5">
+    <div class="container product-container">
+      <div class="row g-4 justify-content-center">
+        <!-- Real Estate Loans -->
+        <div class="col-sm-10 col-md-6 col-lg-4">
+          <div class="product-card loan-card h-100 p-4">
+            <div class="product-icon loan-icon">
+              <i class="fas fa-hand-holding-usd"></i>
+            </div>
+            <h3 class="h4 mb-3">Real Estate Loans</h3>
+            <p class="text-muted">Tailored financing solutions for every stage of your property journey</p>
+            
+            <div class="accordion accordion-flush" id="loansAccordion">
+              <div class="accordion-item border-0">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed py-2 px-0" type="button" data-bs-toggle="collapse" data-bs-target="#loanPackages">
+                    View Loan Packages (6+)
+                  </button>
+                </h2>
+                <div id="loanPackages" class="accordion-collapse collapse" data-bs-parent="#loansAccordion">
+                  <div class="accordion-body p-0 pt-2">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item border-0 ps-0 py-1">First-Time Buyer Loans</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Land Purchase Financing</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Construction Loans</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Rental Property Loans</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Commercial Real Estate</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Bridge Financing</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <a href="#book-consultation" class="btn btn-outline-primary w-100 mt-3">Get Loan Info</a>
+          </div>
+        </div>
+        
+        <!-- Buy Land -->
+        <div class="col-sm-10 col-md-6 col-lg-4">
+          <div class="product-card land-card h-100 p-4">
+            <div class="product-icon land-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <h3 class="h4 mb-3">Buy Land</h3>
+            <p class="text-muted">Secure prime land with our proven acquisition framework</p>
+            
+            <div class="accordion accordion-flush" id="landAccordion">
+              <div class="accordion-item border-0">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed py-2 px-0" type="button" data-bs-toggle="collapse" data-bs-target="#landServices">
+                    Our Land Services
+                  </button>
+                </h2>
+                <div id="landServices" class="accordion-collapse collapse" data-bs-parent="#landAccordion">
+                  <div class="accordion-body p-0 pt-2">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item border-0 ps-0 py-1">Due diligence & verification</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Title transfer assistance</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Land dispute resolution</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Best locations in Cameroon</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <a href="#book-consultation" class="btn btn-outline-success w-100 mt-3">Find Land</a>
+          </div>
+        </div>
+        
+        <!-- Build Dream Home -->
+        <div class="col-sm-10 col-md-6 col-lg-4">
+          <div class="product-card build-card h-100 p-4">
+            <div class="product-icon build-icon">
+              <i class="fas fa-home"></i>
+            </div>
+            <h3 class="h4 mb-3">Build Dream Home</h3>
+            <p class="text-muted">From concept to keys - we connect you with Cameroon's best builders</p>
+            
+            <div class="accordion accordion-flush" id="buildAccordion">
+              <div class="accordion-item border-0">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed py-2 px-0" type="button" data-bs-toggle="collapse" data-bs-target="#buildServices">
+                    Construction Partners
+                  </button>
+                </h2>
+                <div id="buildServices" class="accordion-collapse collapse" data-bs-parent="#buildAccordion">
+                  <div class="accordion-body p-0 pt-2">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item border-0 ps-0 py-1">Architect selection</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Vetted contractors</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Quality materials sourcing</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Project supervision</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <a href="#book-consultation" class="btn btn-outline-warning w-100 mt-3">Start Building</a>
+          </div>
+        </div>
+        
+        <!-- Manage Rental Properties -->
+        <div class="col-sm-10 col-md-6 col-lg-4">
+          <div class="product-card manage-card h-100 p-4">
+            <div class="product-icon manage-icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <h3 class="h4 mb-3">Manage Rentals</h3>
+            <p class="text-muted">Stress-free property management with maximum returns</p>
+            
+            <div class="accordion accordion-flush" id="manageAccordion">
+              <div class="accordion-item border-0">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed py-2 px-0" type="button" data-bs-toggle="collapse" data-bs-target="#manageServices">
+                    Management Services
+                  </button>
+                </h2>
+                <div id="manageServices" class="accordion-collapse collapse" data-bs-parent="#manageAccordion">
+                  <div class="accordion-body p-0 pt-2">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item border-0 ps-0 py-1">Tenant screening</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Rent collection</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Maintenance coordination</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Financial reporting</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <a href="#book-consultation" class="btn btn-outline-danger w-100 mt-3">Manage Properties</a>
+          </div>
+        </div>
+        
+        <!-- Sell Properties -->
+        <div class="col-sm-10 col-md-6 col-lg-4">
+          <div class="product-card sell-card h-100 p-4">
+            <div class="product-icon sell-icon">
+              <i class="fas fa-sign"></i>
+            </div>
+            <h3 class="h4 mb-3">Sell Properties</h3>
+            <p class="text-muted">Maximize your returns with our premium sales network</p>
+            
+            <div class="accordion accordion-flush" id="sellAccordion">
+              <div class="accordion-item border-0">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed py-2 px-0" type="button" data-bs-toggle="collapse" data-bs-target="#sellServices">
+                    Sales Advantages
+                  </button>
+                </h2>
+                <div id="sellServices" class="accordion-collapse collapse" data-bs-parent="#sellAccordion">
+                  <div class="accordion-body p-0 pt-2">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item border-0 ps-0 py-1">Professional valuation</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Premium marketing</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Qualified buyer network</li>
+                      <li class="list-group-item border-0 ps-0 py-1">Negotiation expertise</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <a href="#book-consultation" class="btn btn-outline-info w-100 mt-3">Sell Now</a>
+          </div>
+        </div>
+        
+        <!-- Consultation Card -->
+        <div class="col-sm-10 col-md-6 col-lg-4">
+          <div class="product-card consult-card h-100 p-4 d-flex flex-column justify-content-center">
+            <h3 class="h4 mb-3">Need Guidance?</h3>
+            <p class="text-muted mb-4">Our experts will analyze your situation and recommend the best solutions</p>
+            <a href="#book-consultation" class="btn btn-dark w-100">
+              Book Free 15-Min Consultation
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking Section -->
+  <section id="book-consultation" class="py-5 bg-light">
+    <div class="container product-container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="booking-card card border-0 shadow p-4 p-md-5">
+            <h2 class="text-center mb-4">Book Your Consultation</h2>
+            <form>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Full Name" required>
+                </div>
+                <div class="col-md-6">
+                  <input type="tel" class="form-control" placeholder="Phone Number" required>
+                </div>
+                <div class="col-md-6">
+                  <input type="email" class="form-control" placeholder="Email" required>
+                </div>
+                <div class="col-md-6">
+                  <select class="form-select" required>
+                    <option value="">Service Interested In</option>
+                    <option>Real Estate Loans</option>
+                    <option>Buy Land</option>
+                    <option>Build Dream Home</option>
+                    <option>Manage Rentals</option>
+                    <option>Sell Properties</option>
+                  </select>
+                </div>
+                
+                <!-- Call Type Selection -->
+                <div class="col-12">
+                  <label class="form-label">Consultation Type</label>
+                  <div class="d-flex gap-3">
+                    <div class="call-type-btn flex-grow-1 active" onclick="selectCallType(this, 'video')">
+                      <i class="fas fa-video text-primary"></i>
+                      <span>Video Call</span>
+                      <input type="radio" name="callType" value="video" checked hidden>
+                    </div>
+                    <div class="call-type-btn flex-grow-1" onclick="selectCallType(this, 'phone')">
+                      <i class="fas fa-phone text-primary"></i>
+                      <span>Phone Call</span>
+                      <input type="radio" name="callType" value="phone" hidden>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-12">
+                  <input type="datetime-local" class="form-control" required>
+                </div>
+                <div class="col-12">
+                  <button type="submit" class="btn btn-primary w-100 py-3 fw-bold">
+                    Confirm Booking
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (same as your main site) -->
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Call type selection
+    function selectCallType(element, type) {
+      document.querySelectorAll('.call-type-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      element.classList.add('active');
+      document.querySelector(`input[value="${type}"]`).checked = true;
+    }
+  </script>
+</body>
+</html>

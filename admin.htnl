@@ -1,0 +1,1068 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<script>
+  // Check authentication status
+  if (sessionStorage.getItem('isAdminAuthenticated') !== 'true') {
+    window.location.href = 'admin-login.html';
+  }
+  
+  // Logout functionality
+  function adminLogout() {
+    sessionStorage.removeItem('isAdminAuthenticated');
+    window.location.href = 'admin-login.html';
+  }
+</script>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REI Consultancy | Admin Dashboard</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom CSS -->
+  <style>
+    :root {
+      --primary-blue: #5D64F5;
+      --sidebar-width: 250px;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f9fa;
+    }
+    
+    .sidebar {
+      width: var(--sidebar-width);
+      height: 100vh;
+      position: fixed;
+      background: var(--primary-blue);
+      color: white;
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+    
+    .sidebar-header {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.1);
+    }
+    
+    .sidebar-menu {
+      padding: 0;
+      list-style: none;
+    }
+    
+    .sidebar-menu li {
+      padding: 10px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .sidebar-menu li a {
+      color: white;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .sidebar-menu li.active {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    
+    .sidebar-menu li:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+    
+    .sidebar-menu li i {
+      margin-right: 10px;
+    }
+    
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 20px;
+      transition: all 0.3s;
+    }
+    
+    .card-analytics {
+      border-radius: 10px;
+      border: none;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .table-responsive {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-tabs .nav-link.active {
+      font-weight: bold;
+      border-bottom: 3px solid var(--primary-blue);
+    }
+    
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h3>REI Admin</h3>
+    </div>
+    <ul class="sidebar-menu">
+      <li class="active" data-tab="dashboard">
+        <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      </li>
+      <li data-tab="users">
+        <a href="#"><i class="fas fa-users"></i> User Management</a>
+      </li>
+      <li data-tab="blog">
+        <a href="#"><i class="fas fa-blog"></i> Blog Management</a>
+      </li>
+      <li data-tab="analytics">
+        <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
+      </li>
+      <li>
+        <a href="#"><i class="fas fa-cog"></i> Settings</a>
+      </li>
+      <li>
+        <a href="index.html"><i class="fas fa-sign-out-alt"></i> Back to Site</a>
+      </li>
+        <li>
+        <a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Dashboard Tab -->
+    <div id="dashboard" class="tab-content active">
+      <h2 class="mb-4">Admin Dashboard</h2>
+      
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <div class="card card-analytics text-white bg-primary mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Total Users</h5>
+              <h2 class="card-text" id="total-users">0</h2>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-analytics text-white bg-success mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Blog Posts</h5>
+              <h2 class="card-text" id="total-posts">0</h2>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-analytics text-white bg-warning mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Active Sessions</h5>
+              <h2 class="card-text" id="active-sessions">0</h2>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card card-analytics text-white bg-info mb-3">
+            <div class="card-body">
+              <h5 class="card-title">Page Views</h5>
+              <h2 class="card-text" id="page-views">0</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card card-analytics">
+            <div class="card-body">
+              <h5 class="card-title">Recent Activity</h5>
+              <ul class="list-group list-group-flush" id="recent-activity">
+                <!-- Activity items will be added here by JavaScript -->
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card card-analytics">
+            <div class="card-body">
+              <h5 class="card-title">Quick Actions</h5>
+              <div class="d-grid gap-2">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                  <i class="fas fa-user-plus me-2"></i> Add New User
+                </button>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPostModal">
+                  <i class="fas fa-plus me-2"></i> Create Blog Post
+                </button>
+                <button class="btn btn-info">
+                  <i class="fas fa-download me-2"></i> Export Data
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users Tab -->
+    <div id="users" class="tab-content">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>User Management</h2>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+          <i class="fas fa-user-plus me-2"></i> Add User
+        </button>
+      </div>
+      
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Joined</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-table">
+            <!-- Users will be added here by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+          </li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Blog Tab -->
+    <div id="blog" class="tab-content">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Blog Management</h2>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostModal">
+          <i class="fas fa-plus me-2"></i> Add Post
+        </button>
+      </div>
+      
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="blog-table">
+            <!-- Blog posts will be added here by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+          </li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Analytics Tab -->
+    <div id="analytics" class="tab-content">
+      <h2 class="mb-4">Website Analytics</h2>
+      
+      <ul class="nav nav-tabs mb-4" id="analyticsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="visitors-tab" data-bs-toggle="tab" data-bs-target="#visitors" type="button">Visitors</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="traffic-tab" data-bs-toggle="tab" data-bs-target="#traffic" type="button">Traffic Sources</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="content-tab" data-bs-toggle="tab" data-bs-target="#content" type="button">Content Performance</button>
+        </li>
+      </ul>
+      
+      <div class="tab-content" id="analyticsTabContent">
+        <div class="tab-pane fade show active" id="visitors" role="tabpanel">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card card-analytics">
+                <div class="card-body">
+                  <h5 class="card-title">Visitors Last 30 Days</h5>
+                  <div class="chart-container">
+                    <canvas id="visitorsChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card card-analytics">
+                <div class="card-body">
+                  <h5 class="card-title">Device Distribution</h5>
+                  <div class="chart-container">
+                    <canvas id="devicesChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="card card-analytics">
+                <div class="card-body">
+                  <h5 class="card-title">New vs Returning Visitors</h5>
+                  <div class="chart-container">
+                    <canvas id="visitorTypeChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card card-analytics">
+                <div class="card-body">
+                  <h5 class="card-title">Geographic Distribution</h5>
+                  <div class="chart-container">
+                    <canvas id="geoChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-pane fade" id="traffic" role="tabpanel">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card card-analytics">
+                <div class="card-body">
+                  <h5 class="card-title">Traffic Sources</h5>
+                  <div class="chart-container">
+                    <canvas id="trafficSourcesChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card card-analytics">
+                <div class="card-body">
+                  <h5 class="card-title">Referral Sources</h5>
+                  <div class="chart-container">
+                    <canvas id="referralChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-pane fade" id="content" role="tabpanel">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card card-analytics">
+                <div class="card-body">
+                  <h5 class="card-title">Top Performing Content</h5>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Page</th>
+                          <th>Views</th>
+                          <th>Avg. Time</th>
+                          <th>Bounce Rate</th>
+                        </tr>
+                      </thead>
+                      <tbody id="top-content">
+                        <!-- Top content will be added here by JavaScript -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add User Modal -->
+  <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addUserForm">
+            <div class="mb-3">
+              <label for="userName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="userName" required>
+            </div>
+            <div class="mb-3">
+              <label for="userEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="userEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="userRole" class="form-label">Role</label>
+              <select class="form-select" id="userRole" required>
+                <option value="">Select Role</option>
+                <option value="admin">Administrator</option>
+                <option value="editor">Editor</option>
+                <option value="author">Author</option>
+                <option value="subscriber">Subscriber</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="userPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="userPassword" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveUser">Save User</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Post Modal -->
+  <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addPostModalLabel">Add New Blog Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addPostForm">
+            <div class="mb-3">
+              <label for="postTitle" class="form-label">Title</label>
+              <input type="text" class="form-control" id="postTitle" required>
+            </div>
+            <div class="mb-3">
+              <label for="postAuthor" class="form-label">Author</label>
+              <select class="form-select" id="postAuthor" required>
+                <option value="">Select Author</option>
+                <!-- Authors will be populated by JavaScript -->
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="postCategory" class="form-label">Category</label>
+              <select class="form-select" id="postCategory" required>
+                <option value="">Select Category</option>
+                <option value="Market Trends">Market Trends</option>
+                <option value="Legal Guide">Legal Guide</option>
+                <option value="Investment Tips">Investment Tips</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="postExcerpt" class="form-label">Excerpt</label>
+              <textarea class="form-control" id="postExcerpt" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="postContent" class="form-label">Content</label>
+              <textarea class="form-control" id="postContent" rows="10" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="postImage" class="form-label">Featured Image</label>
+              <input type="file" class="form-control" id="postImage">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="savePost">Publish Post</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit User Modal -->
+  <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editUserForm">
+            <input type="hidden" id="editUserId">
+            <div class="mb-3">
+              <label for="editUserName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="editUserName" required>
+            </div>
+            <div class="mb-3">
+              <label for="editUserEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="editUserEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="editUserRole" class="form-label">Role</label>
+              <select class="form-select" id="editUserRole" required>
+                <option value="admin">Administrator</option>
+                <option value="editor">Editor</option>
+                <option value="author">Author</option>
+                <option value="subscriber">Subscriber</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="editUserStatus" class="form-label">Status</label>
+              <select class="form-select" id="editUserStatus" required>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="suspended">Suspended</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="updateUser">Update User</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JS -->
+  <script>
+    // Sample data - in a real app, this would come from an API
+    const users = [
+      { id: 1, name: "Admin User", email: "admin@rei.com", role: "admin", status: "active", joined: "2023-01-15" },
+      { id: 2, name: "Editor User", email: "editor@rei.com", role: "editor", status: "active", joined: "2023-02-20" },
+      { id: 3, name: "Author User", email: "author@rei.com", role: "author", status: "active", joined: "2023-03-10" },
+      { id: 4, name: "Subscriber User", email: "subscriber@rei.com", role: "subscriber", status: "active", joined: "2023-04-05" },
+      { id: 5, name: "Inactive User", email: "inactive@rei.com", role: "subscriber", status: "inactive", joined: "2023-05-12" }
+    ];
+
+    const blogPosts = [
+      { id: 1, title: "Douala Property Market Trends 2024", author: "Jean Mbarga", category: "Market Trends", date: "2024-03-15", status: "published" },
+      { id: 2, title: "Yaoundé Rental Yields: Best Areas in 2024", author: "Amina Njoya", category: "Market Trends", date: "2024-02-28", status: "published" },
+      { id: 3, title: "Securing Land Titles in Cameroon", author: "Emmanuel Talla", category: "Legal Guide", date: "2024-01-10", status: "published" },
+      { id: 4, title: "Inheriting Property in Cameroon", author: "Sophie Ngassa", category: "Legal Guide", date: "2023-11-22", status: "draft" },
+      { id: 5, title: "Off-Plan Property Investment", author: "Paul Nkwi", category: "Investment Tips", date: "2024-01-05", status: "published" }
+    ];
+
+    const analytics = {
+      visitors: [120, 190, 150, 220, 300, 280, 350, 400, 380, 420, 450, 500],
+      devices: {
+        desktop: 65,
+        mobile: 30,
+        tablet: 5
+      },
+      visitorType: {
+        new: 60,
+        returning: 40
+      },
+      geo: {
+        labels: ["Douala", "Yaoundé", "Bamenda", "Buea", "Other"],
+        data: [45, 30, 10, 8, 7]
+      },
+      trafficSources: {
+        direct: 40,
+        organic: 35,
+        referral: 15,
+        social: 10
+      },
+      topContent: [
+        { page: "Home", views: 1250, time: "2:15", bounce: 35 },
+        { page: "Blog", views: 980, time: "3:45", bounce: 42 },
+        { page: "Services", views: 750, time: "1:50", bounce: 38 },
+        { page: "About", views: 620, time: "1:20", bounce: 45 },
+        { page: "Contact", views: 480, time: "1:05", bounce: 50 }
+      ]
+    };
+
+    // Initialize the dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab switching
+      const menuItems = document.querySelectorAll('.sidebar-menu li');
+      menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const tabId = this.getAttribute('data-tab');
+          if (tabId) {
+            menuItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(tab => {
+              tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+          }
+        });
+      });
+
+      // Load data
+      loadDashboard();
+      loadUsers();
+      loadBlogPosts();
+      initCharts();
+    });
+
+    function loadDashboard() {
+      document.getElementById('total-users').textContent = users.length;
+      document.getElementById('total-posts').textContent = blogPosts.filter(p => p.status === 'published').length;
+      document.getElementById('active-sessions').textContent = Math.floor(Math.random() * 50) + 10;
+      document.getElementById('page-views').textContent = analytics.visitors.reduce((a, b) => a + b, 0);
+      
+      // Recent activity
+      const activityList = document.getElementById('recent-activity');
+      const activities = [
+        { action: 'New user registered', time: '5 minutes ago', icon: 'user-plus' },
+        { action: 'Blog post published', time: '1 hour ago', icon: 'edit' },
+        { action: 'New comment received', time: '3 hours ago', icon: 'comment' },
+        { action: 'System backup completed', time: 'Yesterday', icon: 'save' },
+        { action: 'New subscriber', time: '2 days ago', icon: 'envelope' }
+      ];
+      
+      activityList.innerHTML = activities.map(activity => `
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <i class="fas fa-${activity.icon} me-2 text-primary"></i>
+            ${activity.action}
+          </div>
+          <small class="text-muted">${activity.time}</small>
+        </li>
+      `).join('');
+    }
+
+    function loadUsers() {
+      const usersTable = document.getElementById('users-table');
+      usersTable.innerHTML = users.map(user => `
+        <tr>
+          <td>${user.id}</td>
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td><span class="badge bg-${getRoleBadgeColor(user.role)}">${user.role}</span></td>
+          <td><span class="badge bg-${getStatusBadgeColor(user.status)}">${user.status}</span></td>
+          <td>${new Date(user.joined).toLocaleDateString()}</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary edit-user" data-id="${user.id}">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger delete-user" data-id="${user.id}">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+      
+      // Add event listeners for edit/delete buttons
+      document.querySelectorAll('.edit-user').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const userId = parseInt(this.getAttribute('data-id'));
+          editUser(userId);
+        });
+      });
+      
+      document.querySelectorAll('.delete-user').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const userId = parseInt(this.getAttribute('data-id'));
+          if (confirm('Are you sure you want to delete this user?')) {
+            deleteUser(userId);
+          }
+        });
+      });
+    }
+
+    function loadBlogPosts() {
+      const blogTable = document.getElementById('blog-table');
+      blogTable.innerHTML = blogPosts.map(post => `
+        <tr>
+          <td>${post.id}</td>
+          <td>${post.title}</td>
+          <td>${post.author}</td>
+          <td><span class="badge bg-${getCategoryBadgeColor(post.category)}">${post.category}</span></td>
+          <td>${new Date(post.date).toLocaleDateString()}</td>
+          <td><span class="badge bg-${getPostStatusBadgeColor(post.status)}">${post.status}</span></td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary edit-post" data-id="${post.id}">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger delete-post" data-id="${post.id}">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+      
+      // Populate authors in add post modal
+      const postAuthorSelect = document.getElementById('postAuthor');
+      const authors = [...new Set(blogPosts.map(post => post.author))];
+      postAuthorSelect.innerHTML = '<option value="">Select Author</option>' + 
+        authors.map(author => `<option value="${author}">${author}</option>`).join('');
+    }
+
+    function initCharts() {
+      // Visitors Chart
+      const visitorsCtx = document.getElementById('visitorsChart').getContext('2d');
+      new Chart(visitorsCtx, {
+        type: 'line',
+        data: {
+          labels: Array.from({length: 12}, (_, i) => `Day ${i+1}`),
+          datasets: [{
+            label: 'Visitors',
+            data: analytics.visitors,
+            borderColor: '#5D64F5',
+            backgroundColor: 'rgba(93, 100, 245, 0.1)',
+            tension: 0.4,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+
+      // Devices Chart
+      const devicesCtx = document.getElementById('devicesChart').getContext('2d');
+      new Chart(devicesCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Desktop', 'Mobile', 'Tablet'],
+          datasets: [{
+            data: [analytics.devices.desktop, analytics.devices.mobile, analytics.devices.tablet],
+            backgroundColor: ['#5D64F5', '#28a745', '#ffc107'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+
+      // Visitor Type Chart
+      const visitorTypeCtx = document.getElementById('visitorTypeChart').getContext('2d');
+      new Chart(visitorTypeCtx, {
+        type: 'pie',
+        data: {
+          labels: ['New Visitors', 'Returning Visitors'],
+          datasets: [{
+            data: [analytics.visitorType.new, analytics.visitorType.returning],
+            backgroundColor: ['#5D64F5', '#17a2b8'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }
+      });
+
+      // Geographic Chart
+      const geoCtx = document.getElementById('geoChart').getContext('2d');
+      new Chart(geoCtx, {
+        type: 'bar',
+        data: {
+          labels: analytics.geo.labels,
+          datasets: [{
+            label: 'Visitors by Location',
+            data: analytics.geo.data,
+            backgroundColor: '#5D64F5'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          }
+        }
+      });
+
+      // Traffic Sources Chart
+      const trafficCtx = document.getElementById('trafficSourcesChart').getContext('2d');
+      new Chart(trafficCtx, {
+        type: 'polarArea',
+        data: {
+          labels: ['Direct', 'Organic', 'Referral', 'Social'],
+          datasets: [{
+            data: [
+              analytics.trafficSources.direct,
+              analytics.trafficSources.organic,
+              analytics.trafficSources.referral,
+              analytics.trafficSources.social
+            ],
+            backgroundColor: ['#5D64F5', '#28a745', '#ffc107', '#dc3545']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+
+      // Top Content Table
+      const topContent = document.getElementById('top-content');
+      topContent.innerHTML = analytics.topContent.map(item => `
+        <tr>
+          <td>${item.page}</td>
+          <td>${item.views}</td>
+          <td>${item.time}</td>
+          <td>${item.bounce}%</td>
+        </tr>
+      `).join('');
+    }
+
+    function getRoleBadgeColor(role) {
+      switch(role) {
+        case 'admin': return 'danger';
+        case 'editor': return 'primary';
+        case 'author': return 'info';
+        default: return 'secondary';
+      }
+    }
+
+    function getStatusBadgeColor(status) {
+      switch(status) {
+        case 'active': return 'success';
+        case 'inactive': return 'warning';
+        default: return 'danger';
+      }
+    }
+
+    function getCategoryBadgeColor(category) {
+      switch(category) {
+        case 'Market Trends': return 'primary';
+        case 'Legal Guide': return 'success';
+        case 'Investment Tips': return 'warning';
+        default: return 'secondary';
+      }
+    }
+
+    function getPostStatusBadgeColor(status) {
+      switch(status) {
+        case 'published': return 'success';
+        case 'draft': return 'warning';
+        default: return 'secondary';
+      }
+    }
+
+    function editUser(userId) {
+      const user = users.find(u => u.id === userId);
+      if (user) {
+        document.getElementById('editUserId').value = user.id;
+        document.getElementById('editUserName').value = user.name;
+        document.getElementById('editUserEmail').value = user.email;
+        document.getElementById('editUserRole').value = user.role;
+        document.getElementById('editUserStatus').value = user.status;
+        
+        const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+        modal.show();
+      }
+    }
+
+    function    function deleteUser(userId) {
+      // In a real app, this would make an API call to delete the user
+      const index = users.findIndex(u => u.id === userId);
+      if (index !== -1) {
+        users.splice(index, 1);
+        loadUsers();
+        loadDashboard(); // Refresh dashboard stats
+        alert('User deleted successfully');
+      }
+    }
+
+    // Save new user
+    document.getElementById('saveUser').addEventListener('click', function() {
+      const name = document.getElementById('userName').value;
+      const email = document.getElementById('userEmail').value;
+      const role = document.getElementById('userRole').value;
+      const password = document.getElementById('userPassword').value;
+
+      if (!name || !email || !role || !password) {
+        alert('Please fill all fields');
+        return;
+      }
+
+      // In a real app, this would make an API call to create the user
+      const newUser = {
+        id: users.length + 1,
+        name,
+        email,
+        role,
+        status: 'active',
+        joined: new Date().toISOString().split('T')[0]
+      };
+
+      users.push(newUser);
+      loadUsers();
+      loadDashboard(); // Refresh dashboard stats
+
+      // Reset form and close modal
+      document.getElementById('addUserForm').reset();
+      bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
+      alert('User created successfully');
+    });
+
+    // Update existing user
+    document.getElementById('updateUser').addEventListener('click', function() {
+      const id = parseInt(document.getElementById('editUserId').value);
+      const name = document.getElementById('editUserName').value;
+      const email = document.getElementById('editUserEmail').value;
+      const role = document.getElementById('editUserRole').value;
+      const status = document.getElementById('editUserStatus').value;
+
+      if (!name || !email || !role || !status) {
+        alert('Please fill all fields');
+        return;
+      }
+
+      // In a real app, this would make an API call to update the user
+      const userIndex = users.findIndex(u => u.id === id);
+      if (userIndex !== -1) {
+        users[userIndex] = {
+          ...users[userIndex],
+          name,
+          email,
+          role,
+          status
+        };
+
+        loadUsers();
+        bootstrap.Modal.getInstance(document.getElementById('editUserModal')).hide();
+        alert('User updated successfully');
+      }
+    });
+
+    // Save new blog post
+    document.getElementById('savePost').addEventListener('click', function() {
+      const title = document.getElementById('postTitle').value;
+      const author = document.getElementById('postAuthor').value;
+      const category = document.getElementById('postCategory').value;
+      const excerpt = document.getElementById('postExcerpt').value;
+      const content = document.getElementById('postContent').value;
+
+      if (!title || !author || !category || !excerpt || !content) {
+        alert('Please fill all required fields');
+        return;
+      }
+
+      // In a real app, this would make an API call to create the post
+      const newPost = {
+        id: blogPosts.length + 1,
+        title,
+        author,
+        category,
+        excerpt,
+        content,
+        date: new Date().toISOString().split('T')[0],
+        status: 'published'
+      };
+
+      blogPosts.push(newPost);
+      loadBlogPosts();
+      loadDashboard(); // Refresh dashboard stats
+
+      // Reset form and close modal
+      document.getElementById('addPostForm').reset();
+      bootstrap.Modal.getInstance(document.getElementById('addPostModal')).hide();
+      alert('Blog post published successfully');
+    });
+
+    // Edit blog post (you would implement this similarly to editUser)
+    function editPost(postId) {
+      const post = blogPosts.find(p => p.id === postId);
+      if (post) {
+        // Populate the edit form with post data
+        // Show the edit modal
+        // Similar to how editUser works
+      }
+    }
+
+    // Delete blog post
+    function deletePost(postId) {
+      if (confirm('Are you sure you want to delete this post?')) {
+        // In a real app, this would make an API call to delete the post
+        const index = blogPosts.findIndex(p => p.id === postId);
+        if (index !== -1) {
+          blogPosts.splice(index, 1);
+          loadBlogPosts();
+          loadDashboard(); // Refresh dashboard stats
+          alert('Post deleted successfully');
+        }
+      }
+    }
+
+    // Add event listeners for blog post edit/delete buttons
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('edit-post') || 
+          e.target.parentElement.classList.contains('edit-post')) {
+        const btn = e.target.classList.contains('edit-post') ? e.target : e.target.parentElement;
+        const postId = parseInt(btn.getAttribute('data-id'));
+        editPost(postId);
+      }
+      
+      if (e.target.classList.contains('delete-post') || 
+          e.target.parentElement.classList.contains('delete-post')) {
+        const btn = e.target.classList.contains('delete-post') ? e.target : e.target.parentElement;
+        const postId = parseInt(btn.getAttribute('data-id'));
+        deletePost(postId);
+      }
+    });
+
+    // Export data functionality
+    document.querySelector('.btn-info').addEventListener('click', function() {
+      // In a real app, this would generate a CSV or PDF report
+      alert('Export functionality would generate a report in a real application');
+    });
+  </script>
+</body>
+</html>
